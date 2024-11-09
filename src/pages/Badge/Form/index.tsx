@@ -11,12 +11,18 @@ import Loader from '../../../common/Loader';
 import { BadgeForm } from './validation';
 import TextAreaCustom from '../../../components/Input/TextArea';
 import FileDropzone from '../../../components/Input/DropZone';
+import { BadgeInterface } from '../../../types/badge';
 interface Props {
   register: UseFormRegister<BadgeForm>;
   handleSubmit: UseFormHandleSubmit<BadgeForm, BadgeForm>;
   errors: FieldErrors<BadgeForm>;
   submitData: (data: BadgeForm) => Promise<void>;
   loading: boolean;
+  isEdit: boolean;
+  badge: BadgeInterface;
+  itemId: string | undefined;
+  icon: File | undefined;
+  setIcon: (file: File) => void;
 }
 const FormBadges: React.FC<Props> = (props) => {
 
@@ -58,16 +64,10 @@ const FormBadges: React.FC<Props> = (props) => {
                   <FileDropzone
                     title='Upload Icon'
                     updateType="icon"
-                    error={props.errors.icon?.message}
-                    defaultValue={
-                      props.register('icon').name
-                    }
+                      defaultValue={props.isEdit && !props.icon ? props.badge.icon : ''}
                     multiple={true}
                     updateInputValue={(data) => {
-                      props.register('icon', {
-                        value: data.value,
-                        required: true,
-                      })
+                      props.setIcon(data.value);
                     }}
                   />
                   <div className="flex justify-end gap-4.5">

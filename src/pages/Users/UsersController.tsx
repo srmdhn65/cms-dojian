@@ -31,7 +31,7 @@ const UserController: React.FC = () => {
         true,
       );
       const data = response.data;
-      let totalPages = data.data.totalPages;
+      let totalPages = data.pagination.totalPages;
       let items = data.data;
       setUsers(items);
       setTotalPages(totalPages);

@@ -138,7 +138,7 @@ const BadgesList: React.FC<Props> = (props) => {
                       {item.description}
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <ImageCard images={[item.icon]} alt={item.name} />
+                      <ImageCard images={[item.icon]} alt={item.name} />
                     </td>
 
                     <td className="px-6 py-4 flex gap-2">

@@ -36,7 +36,7 @@ const TopicController: React.FC = () => {
       );
       const data = response.data;
       if (response.status === 200) {
-        let totalPages = data.data.totalPages;
+        let totalPages = data.pagination.totalPages;
         let datas = data.data;
         setItems(datas);
         setTotalPages(totalPages);

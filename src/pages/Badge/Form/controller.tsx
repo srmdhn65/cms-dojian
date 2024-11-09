@@ -10,6 +10,8 @@ import { BadgeInterface } from '../../../types/badge';
 
 const BadgeFormController: React.FC = () => {
   const navigate = useNavigate();
+  const [badge, setBadge] = useState<BadgeInterface>();
+  const [icon, setIcon] = useState<File>();
   const [loading, setLoading] = useState(false);
   const { itemId } = useParams();
   const [isEdit, setIsEdit] = useState(false);
@@ -17,6 +19,7 @@ const BadgeFormController: React.FC = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<BadgeForm>({
     resolver: zodResolver(schema.post),
@@ -32,15 +35,11 @@ const BadgeFormController: React.FC = () => {
       setLoading(true);
       await apiServices.getData(`api/admin/badges/${itemId}`, {}, true).then((response) => {
         const data: BadgeInterface = response.data.data;
-        register('name', {
-          value: data.name || '',
-        })
-        register('description', {
-          value: data.description || '',
-        })
-        // register('icon', {
-        //   value: data.icon || '',
-        // })
+        const BadgeForm = response.data.data;
+        setBadge(data);
+        Object.keys(BadgeForm).forEach((key) => {
+          setValue(key as keyof BadgeForm, BadgeForm[key]);
+        });
       }).catch((error: any) => {
         showToast('error', 'Failed to load question details');
       }).finally(() => setLoading(false));
@@ -56,7 +55,10 @@ const BadgeFormController: React.FC = () => {
       setLoading(true);
       if (isEdit) {
         await apiServices
-          .patchData(`api/admin/badges/${itemId}`, body, {}, true)
+          .uploadFile('api/admin/badges', {
+            "name": body.name,
+            "description": body.description,
+          }, { icon: icon! }, {}, true, "PATCH")
           .then((response) => {
             showToast('success', response.data.message);
             // navigate('/badges');
@@ -66,12 +68,15 @@ const BadgeFormController: React.FC = () => {
             return '';
           }).finally(() => setLoading(false));
       } else {
-        console.log( new File([data.icon] , `${body.name}`, { type: 'image/png' }))
+        if (!icon) {
+          showToast('error', 'Icon is required');
+          return;
+        }
         await apiServices
           .uploadFile('api/admin/badges', {
             "name": body.name,
             "description": body.description,
-          }, { icon: new File([data.icon], `${body.name}`, { type: 'image/png' }) }, {}, true, "POST")
+          }, { icon: icon }, {}, true, "POST")
           .then((response) => {
             console.log(response)
             showToast('success', response.data.message);
@@ -89,6 +94,11 @@ const BadgeFormController: React.FC = () => {
   return (
     <FormQuestion
       register={register}
+      isEdit={isEdit}
+      itemId={itemId}
+      icon={icon}
+      badge={badge!}
+      setIcon={setIcon}
       handleSubmit={handleSubmit}
       errors={errors}
       submitData={submitData}
@@ -98,5 +108,4 @@ const BadgeFormController: React.FC = () => {
 };
 
 export default BadgeFormController;
-
 
