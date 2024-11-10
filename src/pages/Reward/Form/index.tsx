@@ -61,8 +61,9 @@ const FormBadges: React.FC<Props> = (props) => {
                     error={props.errors.icon?.message}
                     multiple={true}
                     updateInputValue={(data) => {
+                      console.log(data) 
                       props.register('icon', {
-                        value: data.value,
+                        // value: data.value,
                         required: true,
                       })
                     }}

@@ -1,4 +1,4 @@
-import { FaRegTrashCan } from 'react-icons/fa6';
+
 import Breadcrumb from '../../../components/Breadcrumbs/Breadcrumb';
 import CustomButton from '../../../components/Button/CustomButton';
 import CustomIconButton from '../../../components/Button/CustomIconButton';
@@ -7,7 +7,7 @@ import DefaultLayout from '../../../layout/DefaultLayout';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import ModalConfirm from '../../../components/Modal/ModalConfirm';
-import { QuestionType } from '../../../config/constant-cms';
+
 import { ItemValue } from '../../../types/item';
 import { FaPencilAlt } from 'react-icons/fa';
 import { BadgeInterface } from '../../../types/badge';

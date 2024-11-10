@@ -5,7 +5,7 @@ export type CategoryForm = {
 };
 
 const post: ZodType<CategoryForm> = z.object({
-  sender: z.string().min(1, { message: 'Pengirim tidak boleh kosong' }),
+  sender: z.string().min(1, 'Sender is required'),
 });
 
 export default { post };

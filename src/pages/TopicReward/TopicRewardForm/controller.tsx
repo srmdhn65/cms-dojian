@@ -98,7 +98,8 @@ const QuestionFormController: React.FC = () => {
           })));
         }
 
-      }).catch((error) => {
+      }).catch((error: any) => {
+        console.log(error)
         showToast('error', 'Failed to load question details');
       }).finally(() => setLoading(false));
     } catch (error) {

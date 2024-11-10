@@ -6,7 +6,7 @@ import DefaultLayout from '../../layout/DefaultLayout';
 import { UserInterface } from '../../types/users';
 import CustomIconButton from '../../components/Button/CustomIconButton';
 import { FaPencilAlt } from 'react-icons/fa';
-import { FaRegTrashCan } from 'react-icons/fa6';
+
 import PaginationCustom from '../../components/Pagination/pagination';
 import ModalConfirm from '../../components/Modal/ModalConfirm';
 import { useState } from 'react';

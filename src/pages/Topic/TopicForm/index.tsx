@@ -20,7 +20,9 @@ interface Props {
 }
 const FormTopic: React.FC<Props> = (props) => {
   const updateFormValue = ({ updateType, value }: { updateType: string; value: string[] }) => {
+    console.log(updateType)
      for (const key in value) {
+       console.log(key)
       props.register('imagesUrl', {
         value: value,
         required: true,
