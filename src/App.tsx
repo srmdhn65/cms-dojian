@@ -8,8 +8,8 @@ import SignUp from './pages/Authentication/SignUp';
 import ECommerce from './pages/Dashboard/ECommerce';
 import ProtectRoute from './helpers/authorization';
 import UserController from './pages/Users/UsersController';
-import UserAddController from './pages/UserAdd/controller';
-import UserEditController from './pages/UserEdit/controller';
+// import UserAddController from './pages/UserAdd/controller';
+// import UserEditController from './pages/UserEdit/controller';
 import TopicController from './pages/Topic/TopicList/controller';
 import TopicAddController from './pages/Topic/TopicForm/controller';
 import QuestionController from './pages/Question/QuestionList/controller';
@@ -77,7 +77,7 @@ function App() {
               </>
             }
           />
-          <Route
+            {/* <Route
             path="users/create" // Note the corrected path
             element={
               <>
@@ -94,7 +94,7 @@ function App() {
                 <UserEditController />
               </>
             }
-          />
+          /> */}
           <Route
             path="/topics"
             element={
