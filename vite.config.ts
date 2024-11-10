@@ -1,15 +1,17 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+// vite.config.js
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    host: '202.10.42.149',  // Replace with your actual IP address
-    port: 3030              // Port for the dev server
-  },
-  preview: {
-    host: '202.10.42.149',  // Same IP for preview if desired
-    port: 8080              // Port for the preview server
-  }
-})
+export default defineConfig(({ mode }) => {
+  return {
+    plugins: [react()],
+    server: {
+      host: mode === 'server' ? '202.10.42.149' : 'localhost', // Use your server IP when in server mode
+      port: mode === 'server' ? 3030 : 5173                   // Use 3030 for server, default for local dev
+    },
+    preview: {
+      host: '202.10.42.149', // IP for preview (if used)
+      port: 8080             // Port for preview server
+    }
+  };
+});

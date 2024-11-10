@@ -4,7 +4,7 @@ import FormData from 'form-data';
 
 
 
-const baseUrl: string = 'http://localhost:7001';
+const baseUrl: string = import.meta.env.VITE_API_BASE_URL;
 
 interface Headers {
     Accept: string;
@@ -83,6 +83,7 @@ class ApiServices {
     ): Promise<AxiosResponse> {
         const paramsText: string = params ? `?${new URLSearchParams(params).toString()}` : '';
         const url: string = `${baseUrl}/${uri}${paramsText}`;
+        console.log(url)
         const headers: Headers = await this.headers(useToken);
         return axios.post(url, body, { headers: { ...headers } });
     }

@@ -8,7 +8,7 @@ import TextInputPassword from '../../components/Input/TextInputPass';
 import CustomButton from '../../components/Button/CustomButton';
 import showToast from '../../helpers/toast';
 import apiServices from '../../services/apiServices';
-
+const baseUrl: string = import.meta.env.VITE_API_BASE_URL;
 type FormData = {
   email: string;
   password: string;
@@ -31,7 +31,7 @@ const SignIn: React.FC = () => {
     try {
       setLoading(true);
       await apiServices
-        .post('http://localhost:7001/api/admin/login', data)
+        .post(`${baseUrl}/api/admin/login`, data)
         .then((response) => {
           setLoading(false);
           const data = response.data.data;
