@@ -1,4 +1,4 @@
-import { FaRegTrashCan } from 'react-icons/fa6';
+
 import Breadcrumb from '../../../components/Breadcrumbs/Breadcrumb';
 import CustomButton from '../../../components/Button/CustomButton';
 import CustomIconButton from '../../../components/Button/CustomIconButton';
