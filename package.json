@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "dev :server": "vite --host 202.10.42.149 --port 5174",
+    "serve": "vite preview --port 6000",
     "preview": "vite preview"
   },
   "dependencies": {
