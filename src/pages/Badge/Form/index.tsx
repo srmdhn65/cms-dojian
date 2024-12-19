@@ -34,7 +34,7 @@ const FormBadges: React.FC<Props> = (props) => {
     ) : (
       <DefaultLayout>
         <div className="mx-auto max-w-270">
-          <Breadcrumb pageName="Badge Form" />
+            <Breadcrumb pageName="Badges Form" />
           <div className="col-span-5 xl:col-span-3">
             <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
               <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">

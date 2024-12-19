@@ -7,9 +7,8 @@ import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
 import ECommerce from './pages/Dashboard/ECommerce';
 import ProtectRoute from './helpers/authorization';
-import UserController from './pages/Users/UsersController';
-// import UserAddController from './pages/UserAdd/controller';
-// import UserEditController from './pages/UserEdit/controller';
+import UserController from './pages/Users/List/UsersController';
+import UserEditController from './pages/Users/UserEdit/controller';
 import TopicController from './pages/Topic/TopicList/controller';
 import TopicAddController from './pages/Topic/TopicForm/controller';
 import QuestionController from './pages/Question/QuestionList/controller';
@@ -17,6 +16,9 @@ import QuestionFormController from './pages/Question/QuestionForm/controller';
 import BadgeController from './pages/Badge/List/controller';
 import BadgeFormController from './pages/Badge/Form/controller';
 import { Toaster } from 'react-hot-toast';
+import UserAddController from './pages/Users/Form/controller';
+import EventController from './pages/Event/List/controller';
+import EventFormController from './pages/Event/Form/controller';
 
 
 
@@ -37,8 +39,8 @@ function App() {
     <Loader />
   ) : (
     <>
-      <div><Toaster   position="top-right"
-  reverseOrder={false}/></div>
+        <div><Toaster position="top-right"
+          reverseOrder={false} /></div>
       <Routes>
         <Route
           path="/auth/signin"
@@ -77,8 +79,8 @@ function App() {
               </>
             }
           />
-            {/* <Route
-            path="users/create" // Note the corrected path
+            <Route
+              path="/users/create" // Note the corrected path
             element={
               <>
                 <PageTitle title="Add Users | Admin Dashboard" />
@@ -87,14 +89,14 @@ function App() {
             }
           />
           <Route
-            path="users/:id/edit" // Note the corrected path
+              path="/users/edit/:userId" // Note the corrected path
             element={
               <>
                 <PageTitle title="Ubah Users | Admin Dashboard" />
                 <UserEditController />
               </>
             }
-          /> */}
+            />
           <Route
             path="/topics"
             element={
@@ -149,7 +151,7 @@ function App() {
               </>
             }
           />
-           <Route
+            <Route
             path="/badges"
             element={
               <>
@@ -168,12 +170,39 @@ function App() {
               </>
             }
           />
-            <Route
+          <Route
             path="/badges/form/:itemId"
             element={
               <>
                 <PageTitle title="Badges Edit | Admin Dashboard" />
                 <BadgeFormController />
+              </>
+            }
+          />
+          <Route
+            path="/events"
+            element={
+              <>
+                <PageTitle title="Events | Admin Dashboard" />
+                <EventController />
+              </>
+            }
+          />
+          <Route
+            path="/events/form"
+            element={
+              <>
+                <PageTitle title="Events Form | Admin Dashboard" />
+                <EventFormController />
+              </>
+            }
+          />
+          <Route
+            path="/events/form/:itemId"
+            element={
+              <>
+                <PageTitle title="events Edit | Admin Dashboard" />
+                <EventFormController />
               </>
             }
           />

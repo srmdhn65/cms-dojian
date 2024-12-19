@@ -1,21 +1,22 @@
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
-import TextInput from '../../components/Input/TextInput';
-import DefaultLayout from '../../layout/DefaultLayout';
-import SelectCustom from '../../components/Select/Select';
-import TextInputPassword from '../../components/Input/TextInputPass';
+import Breadcrumb from '../../../components/Breadcrumbs/Breadcrumb';
+import TextInput from '../../../components/Input/TextInput';
+import DefaultLayout from '../../../layout/DefaultLayout';
+import SelectCustom from '../../../components/Select/Select';
+import TextInputPassword from '../../../components/Input/TextInputPass';
 import {
   FieldErrors,
   UseFormHandleSubmit,
   UseFormRegister,
 } from 'react-hook-form';
-import CustomButton from '../../components/Button/CustomButton';
+import CustomButton from '../../../components/Button/CustomButton';
+import { Roles } from '../../../config/constant-cms';
 export type FormData = {
-  fullname: string;
+  name: string;
   email: string;
   phone: string;
   username: string;
-  password: string;
-  confirmPassword: string;
+  password?: string | null;
+  confirmPassword?: string | null;
   role: string;
 };
 interface Props {
@@ -44,9 +45,9 @@ const EditUser: React.FC<Props> = (props) => {
                     labelTitle="Fullname"
                     placeholder="Fullname"
                     updateType="fullname"
-                    error={props.errors.fullname?.message}
+                    error={props.errors.name?.message}
                     register={{
-                      ...props.register('fullname'),
+                      ...props.register('name'),
                     }}
                     icon={
                       <svg
@@ -127,19 +128,22 @@ const EditUser: React.FC<Props> = (props) => {
                     register={{
                       ...props.register('role'),
                     }}
-                    items={['Admin', 'User']}
+                    items={Roles.map((item) => ({
+                      label: item.label,  // Convert item to string if necessary
+                      value: item.value,  // Ensure value is also a string
+                    }))}
                   />
                 </div>
                 <TextInput
-                    labelTitle="Name"
-                    placeholder="Name"
-                    updateType="username"
-                    error={props.errors.username?.message}
-                    register={{
-                      ...props.register('username'),
-                    }}
-                    
-                  />
+                  labelTitle="Name"
+                  placeholder="Name"
+                  updateType="username"
+                  error={props.errors.username?.message}
+                  register={{
+                    ...props.register('username'),
+                  }}
+
+                />
                 <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                   <TextInputPassword
                     labelTitle="Password"

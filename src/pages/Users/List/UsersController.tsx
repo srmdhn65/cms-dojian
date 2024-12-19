@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { UserInterface } from '../../types/users';
-import apiServices from '../../services/apiServices';
+import { UserInterface } from '../../../types/users';
+import apiServices from '../../../services/apiServices';
 import Users from './index';
-import showToast from '../../helpers/toast';
+import showToast from '../../../helpers/toast';
 
 const UserController: React.FC = () => {
   const [users, setUsers] = useState<UserInterface[]>([]);

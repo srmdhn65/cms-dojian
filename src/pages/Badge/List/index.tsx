@@ -130,7 +130,7 @@ const BadgesList: React.FC<Props> = (props) => {
                     key={key}
                     className="dark:bg-boxdark dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                   >
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <td className="text-cen border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                       {(props.currentPage - 1) * 10 + key + 1}
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">{item.name}</td>

@@ -1,30 +1,41 @@
+import { useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../../components/Breadcrumbs/Breadcrumb';
 import CustomButton from '../../../components/Button/CustomButton';
-import CustomIconButton from '../../../components/Button/CustomIconButton';
 import TextInput from '../../../components/Input/TextInput';
-import PaginationCustom from '../../../components/Pagination/pagination';
 import DefaultLayout from '../../../layout/DefaultLayout';
-import { useNavigate } from 'react-router-dom';
-import { TopicInterface } from '../../../types/topics';
-import { useState } from 'react';
-import ModalConfirm from '../../../components/Modal/ModalConfirm';
+import { UserInterface } from '../../../types/users';
+import CustomIconButton from '../../../components/Button/CustomIconButton';
 import { FaPencilAlt } from 'react-icons/fa';
 
+import PaginationCustom from '../../../components/Pagination/pagination';
+import ModalConfirm from '../../../components/Modal/ModalConfirm';
+import { useState } from 'react';
+
 interface Props {
-  items: TopicInterface[];
+  usersData: UserInterface[];
   setSearchTerm: (searchTerm: string) => void;
   searchTerm: string;
   totalPages: number;
   currentPage: number;
+  deleteUser: (id: string) => void;
   onPageChange: (page: number) => void;
-  deleteItem: (id: string) => void;
 }
-
-const TopicList: React.FC<Props> = (props) => {
-  const navigate = useNavigate();
+const Users: React.FC<Props> = ({
+  usersData,
+  setSearchTerm,
+  totalPages,
+  currentPage,
+  deleteUser,
+  onPageChange,
+}) => {
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState('');
 
+  const handleDelete = (id: string) => {
+    setDeleteId(id);
+    setOpen(true);
+  };
+  const navigate = useNavigate();
   const updateFormValue = ({
     updateType,
     value,
@@ -34,7 +45,7 @@ const TopicList: React.FC<Props> = (props) => {
   }) => {
     switch (updateType) {
       case 'search':
-        props.setSearchTerm(value);
+        setSearchTerm(value);
         break;
       default:
         break;
@@ -42,33 +53,29 @@ const TopicList: React.FC<Props> = (props) => {
   };
 
   const handleNextPage = () => {
-    if (props.currentPage < props.totalPages) {
-      props.onPageChange(props.currentPage + 1);
+    if (currentPage < totalPages) {
+      onPageChange(currentPage + 1);
     }
   };
 
   const handlePrevPage = () => {
-    if (props.currentPage > 1) {
-      props.onPageChange(props.currentPage - 1);
+    if (currentPage > 1) {
+      onPageChange(currentPage - 1);
     }
   };
-
-  const handleDelete = (id: string) => {
-    setDeleteId(id);
-    setOpen(true);
-  };
-
-
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Topik" />
+      <Breadcrumb pageName="Users" />
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="mb-6 flex items-center justify-between">
           <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
-            Topik
+            List Of Users
           </h4>
           <div className="flex items-center gap-2">
-            <CustomButton label="Tambah" onClick={() => navigate('/topics/form')} />
+            <CustomButton
+              label="Tambah"
+              onClick={() => navigate('/users/create')}
+            ></CustomButton>
           </div>
         </div>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -98,57 +105,51 @@ const TopicList: React.FC<Props> = (props) => {
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table-auto">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
-                <th className="text-center min-w py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                <th className="min-w py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
                   No
                 </th>
                 <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                  Nama
+                  Name
                 </th>
-                <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                  Point Cost
+                <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+                  Email
                 </th>
-                <th className="min-w text-center py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                  Aksi
+                <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+                  Phone
+                </th>
+                <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+                  Action
                 </th>
               </tr>
             </thead>
             <tbody>
-              {props.items.length === 0 ? (
+              {usersData.length === 0 ? (
+
                 <tr>
                   <td colSpan={5} className="text-center py-4">
                     No Data Found
                   </td>
                 </tr>
               ) : (
-                props.items.map((item: TopicInterface, key: number) => (
+                usersData.map((user: UserInterface, key: number) => (
                   <tr
                     key={key}
-                    className="dark:bg-boxdark dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                    className="dark:bg-boxdark   dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                   >
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      {(props.currentPage - 1) * 10 + key + 1}
+                    <td className="text-center border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      {(currentPage - 1) * 10 + key + 1}
                     </td>
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">{item.name}</td>
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      {item.point_cost}
-                      {/* {item.images && item.images.length > 0 ? (
-                      item.images.map((image, index) => (
-                        <img
-                          key={index}
-                          src={image} // Use the image URL (or Base64 string)
-                          alt={`Topic ${item.name} Image ${index + 1}`}
-                          style={{ width: '100px', height: '100px', objectFit: 'cover', marginRight: '10px' }}
-                        />
-                      ))
-                    ) : (
-                      <p>No images available</p>
-                    )} */}
+                    <td
+                      className="border-b border-[#eee] py-5 px-4 dark:border-strokedark"
+                    >
+                      {user.name}
                     </td>
-
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">{user.email}</td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">{user.phone}</td>
                     <td className="px-6 py-4 flex gap-2">
                       <CustomIconButton
                         icon={<FaPencilAlt />}
-                        onClick={() => navigate(`/topics/form/${item.id}`)}
+                        onClick={() => navigate(`/users/edit/${user.id}`)}
                       />
                       <CustomIconButton
                         icon={<svg
@@ -177,7 +178,7 @@ const TopicList: React.FC<Props> = (props) => {
                           />
                         </svg>}
                         onClick={() =>
-                          handleDelete(item.id?.toString() || '')
+                          handleDelete(user.id?.toString() || '')
                         }
                         color="red-500"
                         bg="red-600"
@@ -189,17 +190,15 @@ const TopicList: React.FC<Props> = (props) => {
             </tbody>
           </table>
         </div>
-
-        {/* Uncomment if you need to add delete functionality */}
         <ModalConfirm
           open={open}
           setOpen={setOpen}
           id={deleteId}
-          title="Delete Category"
-          message="Are you sure you want to delete this data?"
+          title="Delete User"
+          message="Are you sure you want to delete this user?"
           onConfirm={() => {
+            deleteUser(deleteId);
             setOpen(false);
-            props.deleteItem(deleteId);
             setDeleteId('');
           }}
           onCancel={() => {
@@ -208,15 +207,15 @@ const TopicList: React.FC<Props> = (props) => {
           }}
         />
         <PaginationCustom
-          currentPage={props.currentPage}
-          totalPages={props.totalPages}
+          currentPage={currentPage}
+          totalPages={totalPages}
           handleNextPage={handleNextPage}
           handlePrevPage={handlePrevPage}
-          onPageChange={props.onPageChange}
+          onPageChange={onPageChange}
         />
       </div>
     </DefaultLayout>
   );
 };
 
-export default TopicList;
+export default Users;

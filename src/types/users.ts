@@ -1,5 +1,5 @@
 export type UserInterface = {
-    userId?: number;
+    id?: number;
     name: string;
     email: string;
     username?: string;

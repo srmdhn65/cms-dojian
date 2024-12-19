@@ -5,10 +5,11 @@ interface SelectCustomProps {
   title: string;
   updateType: string;
   className?: string;
-  items: any[];
+  items: { label: string; value: string }[]; // Label and value for react-select
   register?: any;
   errors?: string;
   placeholder?: string;
+  defaultValue?: string; // Updated type to match option format
 }
 
 const SelectCustom: React.FC<SelectCustomProps> = ({
@@ -19,6 +20,7 @@ const SelectCustom: React.FC<SelectCustomProps> = ({
   errors,
   items,
   register,
+  defaultValue,
 }) => {
   return (
     <div className="w-full mb-4">
@@ -43,8 +45,8 @@ const SelectCustom: React.FC<SelectCustomProps> = ({
             </option>
           )}
           {items.map((item, index) => (
-            <option key={index} value={item}>
-              {item}
+            <option key={index} defaultValue={defaultValue} value={item.value}>
+              {item.label}
             </option>
           ))}
         </select>{' '}

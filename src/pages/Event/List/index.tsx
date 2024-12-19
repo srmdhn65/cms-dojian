@@ -1,41 +1,32 @@
-import { useNavigate } from 'react-router-dom';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
-import CustomButton from '../../components/Button/CustomButton';
-import TextInput from '../../components/Input/TextInput';
-import DefaultLayout from '../../layout/DefaultLayout';
-import { UserInterface } from '../../types/users';
-import CustomIconButton from '../../components/Button/CustomIconButton';
-import { FaPencilAlt } from 'react-icons/fa';
 
-import PaginationCustom from '../../components/Pagination/pagination';
-import ModalConfirm from '../../components/Modal/ModalConfirm';
+import Breadcrumb from '../../../components/Breadcrumbs/Breadcrumb';
+import CustomButton from '../../../components/Button/CustomButton';
+import CustomIconButton from '../../../components/Button/CustomIconButton';
+import PaginationCustom from '../../../components/Pagination/pagination';
+import DefaultLayout from '../../../layout/DefaultLayout';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import ModalConfirm from '../../../components/Modal/ModalConfirm';
+import { ItemValue } from '../../../types/item';
+import { FaPencilAlt } from 'react-icons/fa';
+import { EventInterface } from '../../../types/event';
+import TextInput from '../../../components/Input/TextInput';
+import ImageCard from '../../../components/Image/image';
 
 interface Props {
-  usersData: UserInterface[];
-  setSearchTerm: (searchTerm: string) => void;
-  searchTerm: string;
+  items: EventInterface[];
+  setSearchTerm: (searchTerm: ItemValue) => void;
   totalPages: number;
   currentPage: number;
-  deleteUser: (id: string) => void;
   onPageChange: (page: number) => void;
+  deleteItem: (id: string) => void;
 }
-const Users: React.FC<Props> = ({
-  usersData,
-  setSearchTerm,
-  totalPages,
-  currentPage,
-  deleteUser,
-  onPageChange,
-}) => {
+
+const BadgesList: React.FC<Props> = (props) => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState('');
 
-  const handleDelete = (id: string) => {
-    setDeleteId(id);
-    setOpen(true);
-  };
-  const navigate = useNavigate();
   const updateFormValue = ({
     updateType,
     value,
@@ -43,42 +34,41 @@ const Users: React.FC<Props> = ({
     updateType: string;
     value: string;
   }) => {
-    switch (updateType) {
-      case 'search':
-        setSearchTerm(value);
-        break;
-      default:
-        break;
-    }
+    const searchTerm: ItemValue = { key: updateType, value };
+    props.setSearchTerm(searchTerm);
   };
 
   const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      onPageChange(currentPage + 1);
+    if (props.currentPage < props.totalPages) {
+      props.onPageChange(props.currentPage + 1);
     }
   };
 
   const handlePrevPage = () => {
-    if (currentPage > 1) {
-      onPageChange(currentPage - 1);
+    if (props.currentPage > 1) {
+      props.onPageChange(props.currentPage - 1);
     }
   };
+
+  const handleDelete = (id: string) => {
+    setDeleteId(id);
+    setOpen(true);
+  };
+
+
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Users" />
+      <Breadcrumb pageName="Events" />
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="mb-6 flex items-center justify-between">
           <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
-            List Of Users
+            Events Data
           </h4>
           <div className="flex items-center gap-2">
-            <CustomButton
-              label="Tambah"
-              onClick={() => navigate('/users/create')}
-            ></CustomButton>
+            <CustomButton label="Tambah" onClick={() => navigate('/events/form')} />
           </div>
         </div>
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div className='flex flex-col gap-5.5 sm:flex-row'>
           <TextInput
             placeholder="Search"
             className="block w-min p-3 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg dark:bg-boxdark focus:ring"
@@ -102,54 +92,58 @@ const Users: React.FC<Props> = ({
               </svg>
             }
           />
+        </div>
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+
+
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table-auto">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
-                <th className="min-w py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                <th className="min-w py-4 px-4 font-medium text-center text-black dark:text-white xl:pl-11">
                   No
                 </th>
-                <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                <th scope="col" className="px-6 py-3">
                   Name
                 </th>
-                <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                  Email
+                <th scope="col" className="px-6 py-3">
+                  Description
                 </th>
-                <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                  Phone
+                <th scope="col" className="px-6 py-3">
+                  Icon
                 </th>
-                <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                  Action
+                <th scope="col" className="px-6 py-3">
+                  Aksi
                 </th>
               </tr>
             </thead>
             <tbody>
-              {usersData.length === 0 ? (
-
+              {props.items.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="text-center py-4">
                     No Data Found
                   </td>
                 </tr>
               ) : (
-                usersData.map((user: UserInterface, key: number) => (
+                props.items.map((item: EventInterface, key: number) => (
                   <tr
                     key={key}
-                    className="dark:bg-boxdark   dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                    className="dark:bg-boxdark dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                   >
-                     <td className="text-center border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      {(currentPage - 1) * 10 + key + 1}
+                    <td className="text-center border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      {(props.currentPage - 1) * 10 + key + 1}
                     </td>
-                    <td
-                      className="border-b border-[#eee] py-5 px-4 dark:border-strokedark"
-                    >
-                      {user.name}
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">{item.name}</td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      {item.description}
                     </td>
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">{user.email}</td>
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">{user.phone}</td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <ImageCard images={[item.image ?? '']} alt={item.name ?? ''} />
+                    </td>
+
                     <td className="px-6 py-4 flex gap-2">
                       <CustomIconButton
                         icon={<FaPencilAlt />}
-                        onClick={() => navigate(`/users/${user.userId}/edit`)}
+                        onClick={() => navigate(`/events/form/${item.id}`)}
                       />
                       <CustomIconButton
                         icon={<svg
@@ -178,7 +172,7 @@ const Users: React.FC<Props> = ({
                           />
                         </svg>}
                         onClick={() =>
-                          handleDelete(user.userId?.toString() || '')
+                          handleDelete(item.id?.toString() || '')
                         }
                         color="red-500"
                         bg="red-600"
@@ -190,15 +184,17 @@ const Users: React.FC<Props> = ({
             </tbody>
           </table>
         </div>
+
+        {/* Uncomment if you need to add delete functionality */}
         <ModalConfirm
           open={open}
           setOpen={setOpen}
           id={deleteId}
-          title="Delete User"
-          message="Are you sure you want to delete this user?"
+          title="Delete Category"
+          message="Are you sure you want to delete this data?"
           onConfirm={() => {
-            deleteUser(deleteId);
             setOpen(false);
+            props.deleteItem(deleteId);
             setDeleteId('');
           }}
           onCancel={() => {
@@ -207,15 +203,15 @@ const Users: React.FC<Props> = ({
           }}
         />
         <PaginationCustom
-          currentPage={currentPage}
-          totalPages={totalPages}
+          currentPage={props.currentPage}
+          totalPages={props.totalPages}
           handleNextPage={handleNextPage}
           handlePrevPage={handlePrevPage}
-          onPageChange={onPageChange}
+          onPageChange={props.onPageChange}
         />
       </div>
     </DefaultLayout>
   );
 };
 
-export default Users;
+export default BadgesList;

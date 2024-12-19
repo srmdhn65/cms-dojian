@@ -1,14 +1,15 @@
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
-import TextInput from '../../components/Input/TextInput';
-import DefaultLayout from '../../layout/DefaultLayout';
-import SelectCustom from '../../components/Select/Select';
-import TextInputPassword from '../../components/Input/TextInputPass';
+import Breadcrumb from '../../../components/Breadcrumbs/Breadcrumb';
+import TextInput from '../../../components/Input/TextInput';
+import DefaultLayout from '../../../layout/DefaultLayout';
+import SelectCustom from '../../../components/Select/Select';
+import TextInputPassword from '../../../components/Input/TextInputPass';
 import {
   FieldErrors,
   UseFormHandleSubmit,
   UseFormRegister,
 } from 'react-hook-form';
-import CustomButton from '../../components/Button/CustomButton';
+import CustomButton from '../../../components/Button/CustomButton';
+import { Roles } from '../../../config/constant-cms';
 export type FormData = {
   name: string;
   email: string;
@@ -47,7 +48,7 @@ const AddUser: React.FC<Props> = (props) => {
                     error={props.errors.name?.message}
                     register={{
                       ...props.register('name'),
-                    }}                  
+                    }}
                   />
                   <TextInput
                     labelTitle="Phone Number"
@@ -60,15 +61,15 @@ const AddUser: React.FC<Props> = (props) => {
                   />
                 </div>
                 <TextInput
-                    labelTitle="Name"
-                    placeholder="Name"
-                    updateType="username"
-                    error={props.errors.username?.message}
-                    register={{
-                      ...props.register('username'),
-                    }}
-                    
-                  />
+                  labelTitle="Username"
+                  placeholder="Username"
+                  updateType="username"
+                  error={props.errors.username?.message}
+                  register={{
+                    ...props.register('username'),
+                  }}
+
+                />
                 <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                   <TextInput
                     labelTitle="Email"
@@ -78,18 +79,22 @@ const AddUser: React.FC<Props> = (props) => {
                     register={{
                       ...props.register('email'),
                     }}
-                  
+
                   />
                   <SelectCustom
                     title="Role"
                     updateType="role"
                     placeholder="Silahkan Pilih"
-                    errors={props.errors.role?.message}
+                    errors={props.errors?.role?.message || ''}  // Use optional chaining for safe access
                     register={{
-                      ...props.register('role'),
+                      ...props.register?.('role'),               // Ensure register is a function
                     }}
-                    items={['Admin', 'User']}
+                    items={Roles.map((item) => ({
+                      label: item.toString(),  // Convert item to string if necessary
+                      value: item.toString(),  // Ensure value is also a string
+                    }))}                                 // Ensure Roles is defined and provide a fallback
                   />
+
                 </div>
                 <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                   <TextInputPassword
