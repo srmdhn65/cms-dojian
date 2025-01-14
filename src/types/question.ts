@@ -1,6 +1,7 @@
 export type QuestionInterface = {
     id: number | null,
     topic_id: string | null,
+    topic: any,
     question_text: string | null,
     question_type: string | null,
     options: string[] | null,

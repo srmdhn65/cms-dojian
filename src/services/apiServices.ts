@@ -4,11 +4,12 @@ import FormData from 'form-data';
 
 
 
-const baseUrl: string = import.meta.env.VITE_API_BASE_URL;
+const baseUrl: string = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
 
 interface Headers {
     Accept: string;
     Authorization?: string;
+    'Content-Type'?: string;
 }
 
 class ApiServices {
@@ -31,11 +32,13 @@ class ApiServices {
             }
             return {
                 Accept: 'application/json',
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
             };
         } else {
             return {
-                Accept: 'application/json'
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             };
         }
     }
@@ -83,7 +86,6 @@ class ApiServices {
     ): Promise<AxiosResponse> {
         const paramsText: string = params ? `?${new URLSearchParams(params).toString()}` : '';
         const url: string = `${baseUrl}/${uri}${paramsText}`;
-        console.log(url)
         const headers: Headers = await this.headers(useToken);
         return axios.post(url, body, { headers: { ...headers } });
     }
@@ -148,5 +150,7 @@ class ApiServices {
     }
 
 }
+
+
 
 export default ApiServices.getInstance();

@@ -21,6 +21,32 @@ export const QuestionType = [
     }
 ]
 
+export const RewardType = [
+    {
+        "value": "badge",
+        "label": "Badge"
+    },
+    {
+        "value": "point",
+        "label": "Point"
+    },
+    {
+        "value": "doji_point",
+        "label": "Doji Point"
+    }
+]
+
+export const TargetType = [
+    {
+        "value": "completed_score",
+        "label": "Skor Selesai",
+    },
+    {
+        "value": "level",
+        "label": "Level",
+    }
+]
+
 
 export const Roles = [
     {
