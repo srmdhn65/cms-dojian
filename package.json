@@ -105,7 +105,8 @@
     "@types/redux-saga": "^0.10.5",
     "@types/sortablejs": "^1.10.7",
     "postcss-custom-properties": "^12.1.4",
-    "prettier": "^2.3.2"
+    "prettier": "^2.3.2",
+    "webpack-dev-server": "4.11.1"
   },
   "resolutions": {
     "postcss-custom-properties": "^12.1.4",
