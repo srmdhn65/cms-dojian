@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkdojian_admin=self.webpackChunkdojian_admin||[]).push([[7341],{97341:(a,e,t)=>{t.r(e),t.d(e,{default:()=>l});t(65043);var r=t(94364),s=t(70579);const l=()=>(0,s.jsx)(s.Fragment,{children:(0,s.jsx)(r.A,{breadCrumbItems:[{label:"Extra Pages",path:"/pages/starter"},{label:"Starter",path:"/pages/starter",active:!0}],title:"Starter"})})}}]);
+//# sourceMappingURL=7341.7b68d8f0.chunk.js.map
