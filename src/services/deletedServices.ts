@@ -13,7 +13,8 @@ class DeleteService {
         id: string,
         fetchCallback?: () => void
     ) {
-        try {
+        try { 
+
             // Display confirmation dialog
             const result = await swal.fire({
                 title: "Kamu Yakin?",
