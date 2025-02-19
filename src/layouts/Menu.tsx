@@ -9,6 +9,7 @@ import { findAllParent, findMenuItem } from "../helpers/menu";
 
 // constants
 import { MenuItemTypes } from "../constants/menu";
+import config from "../config";
 
 interface SubMenus {
   item: MenuItemTypes;
@@ -182,10 +183,10 @@ const AppMenu = ({ menuItems }: AppMenuProps) => {
     if (div) {
       let items: any = div.getElementsByClassName("side-nav-link-ref");
       for (let i = 0; i < items.length; ++i) {
-        let trimmedURL = location?.pathname?.replaceAll(process.env.PUBLIC_URL, "");
+        let trimmedURL = location?.pathname?.replaceAll(config.PUBLIC_URL, "");
         // console.log(trimmedURL);
-        // console.log("pathname",items[i].pathname.replaceAll(process.env.PUBLIC_URL, ""));
-        if (trimmedURL === items[i]?.pathname?.replaceAll(process.env.PUBLIC_URL, "")) {
+        // console.log("pathname",items[i].pathname.replaceAll(config.PUBLIC_URL, ""));
+        if (trimmedURL === items[i]?.pathname?.replaceAll(config.PUBLIC_URL, "")) {
           matchingMenuItem = items[i];
           break;
         }

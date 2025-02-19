@@ -23,8 +23,8 @@ import './assets/scss/Default.scss';
 
 
 // Other
-// import './assets/scss/Landing.scss';
-// import "./assets/scss/Icons.scss";
+import './assets/scss/Landing.scss';
+import "./assets/scss/Icons.scss";
 
 // configure fake backend
 

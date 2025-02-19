@@ -1,10 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
 import showToast from '../helpers/toast';
 import FormData from 'form-data';
+import config from '../config';
 
 
 
-const baseUrl: string = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
+const baseUrl: string =config.API_BASE_URL || 'http://localhost:8000/api';
 
 interface Headers {
     Accept: string;
