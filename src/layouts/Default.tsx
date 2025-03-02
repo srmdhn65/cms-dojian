@@ -21,9 +21,8 @@ interface DefaultLayoutProps {
 }
 
 const DefaultLayout = (props: DefaultLayoutProps) => {
-  const { layoutColor } = useSelector((state: RootState) => ({
-    layoutColor: state.Layout.layoutColor,
-  }));
+  const layoutColor = useSelector((state: RootState) => state.Layout.layoutColor);
+
 
   useEffect(() => {
     changeHTMLAttribute("data-bs-theme", layoutColor);

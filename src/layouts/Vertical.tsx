@@ -31,29 +31,17 @@ const VerticalLayout = ({ children }: VerticalLayoutProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { width } = useViewport();
 
-  const {
-    layoutMode,
-    layoutColor,
-    layoutWidth,
-    menuPosition,
-    leftSideBarTheme,
-    leftSideBarType,
-    showSidebarUserInfo,
-    showTwoToneIcons,
-    topbarTheme,
-    isOpenRightSideBar,
-  } = useSelector((state: RootState) => ({
-    layoutMode: state.Layout.layoutMode,
-    layoutColor: state.Layout.layoutColor,
-    layoutWidth: state.Layout.layoutWidth,
-    menuPosition: state.Layout.menuPosition,
-    leftSideBarTheme: state.Layout.leftSideBarTheme,
-    leftSideBarType: state.Layout.leftSideBarType,
-    showSidebarUserInfo: state.Layout.showSidebarUserInfo,
-    showTwoToneIcons: state.Layout.showTwoToneIcons,
-    topbarTheme: state.Layout.topbarTheme,
-    isOpenRightSideBar: state.Layout.isOpenRightSideBar,
-  }));
+  const layoutMode = useSelector((state: RootState) => state.Layout.layoutMode);
+  const layoutColor = useSelector((state: RootState) => state.Layout.layoutColor);
+  const layoutWidth = useSelector((state: RootState) => state.Layout.layoutWidth);
+  const menuPosition = useSelector((state: RootState) => state.Layout.menuPosition);
+  const leftSideBarTheme = useSelector((state: RootState) => state.Layout.leftSideBarTheme);
+  const leftSideBarType = useSelector((state: RootState) => state.Layout.leftSideBarType);
+  const showSidebarUserInfo = useSelector((state: RootState) => state.Layout.showSidebarUserInfo);
+  const showTwoToneIcons = useSelector((state: RootState) => state.Layout.showTwoToneIcons);
+  const topbarTheme = useSelector((state: RootState) => state.Layout.topbarTheme);
+  const isOpenRightSideBar = useSelector((state: RootState) => state.Layout.isOpenRightSideBar);
+
 
   const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
 

@@ -2,6 +2,7 @@ export type EventInterface = {
     image: string | null;
     id: number | null;
     name: string | null;
+    rank: string | null;
     description: string | null;
     rules: string | null;
     startDate: Date | null;

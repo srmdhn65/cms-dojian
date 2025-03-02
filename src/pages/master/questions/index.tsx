@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import classNames from "classnames";
 import { Row, Col, Card, Button } from "react-bootstrap";
 import PageTitle from "../../../components/PageTitle";
 // import apiServices from "../../../helpers/api/api";
@@ -10,10 +9,10 @@ import apiServices from "../../../services/apiServices";
 import Pagination from "../../../components/Pagination";
 import DeleteService from "../../../services/deletedServices";
 import { QuestionInterface } from "../../../types/question";
-import ImportQuestion from "./import";
 import SelectInput from "../../../components/FormSelect";
 import { QuestionType } from "../../../config/constant-cms";
 import { TopicInterface } from "../../../types/topics";
+import ImportQuestion from "./import";
 
 const QuestionList = () => {
     const navigate = useNavigate();
@@ -31,7 +30,8 @@ const QuestionList = () => {
     /*
       handle form submission
       */
-    const onSubmit = () => {
+    const onSubmit = (value: any) => {
+        console.log(value);
         onCloseModal();
     };
 
@@ -71,6 +71,7 @@ const QuestionList = () => {
                 {
                     name: params,
                 },
+                true
             );
             const data = response.data;
             if (response.status === 200) {
@@ -99,12 +100,12 @@ const QuestionList = () => {
                     title={"Data Pertanyaan"}
                 />
 
-                <Row>
+                <Row>   
                     <Col>
                         <Card>
+
                             <Card.Body>
-                                <Row className="d-flex justify-content-between align-items-center">
-                                    {/* Button Section */}
+                                <Row className="mb-3">
                                     <Col sm={2} className="d-flex">
                                         <CustomButton
                                             type="button"
@@ -112,6 +113,21 @@ const QuestionList = () => {
                                             label="Tambah Data"
                                         />
                                     </Col>
+                                    <Col>
+                                        <div className="text-sm-end">
+                                            {/* <Button className="btn btn-success mb-2 me-1">
+                                                <i className="mdi mdi-cog-outline"></i>
+                                            </Button> */}
+                                            <Button className="btn btn-light mb-2 me-1" onClick={() => {
+                                                setShow(true)
+                                            }}>Import</Button>
+                                            {/* <Button className="btn btn-light mb-2">Export</Button> */}
+                                        </div>
+                                    </Col>
+                                </Row>
+                                <Row className="d-flex justify-content-between align-items-center">
+                                    {/* Button Section */}
+
                                     <Col sm={4} className="justify-content-end">
                                         <SelectInput
                                             name="topic_id"
@@ -123,7 +139,8 @@ const QuestionList = () => {
                                             defaultValue={selectedTopic}
                                             onChange={(selectedValue) => setSelectedTopic(selectedValue)}
                                             placeholder="Pilih Topik"
-                                        /></Col>
+                                        />
+                                    </Col>
 
 
                                     {/* Select Inputs Section */}
@@ -143,6 +160,7 @@ const QuestionList = () => {
                                 </Row>
 
 
+
                                 <table className="table table-striped">
                                     <thead>
                                         <tr>
@@ -159,7 +177,7 @@ const QuestionList = () => {
                                                 <td className="text-center">
                                                     {(currentPage - 1) * 10 + key + 1}
                                                 </td>
-                                                <td className="text-center">{item.topic.name ?? ''}</td>
+                                                <td className="text-center">{item.topic?.name ?? ''}</td>
                                                 <td dangerouslySetInnerHTML={{ __html: item.question_text || '' }}></td>
                                                 <td>
                                                     {item.question_type === 'mcq' || item.question_type === 'case_study' ? (
@@ -191,16 +209,16 @@ const QuestionList = () => {
                                                     )}
                                                 </td>
                                                 <td>
-                                                    <Link to="#" className="action-icon">
+                                                    <Link to="#" className="btn btn-xs btn-light">
                                                         <i className="mdi mdi-eye"></i>
                                                     </Link>
-                                                    <Link to="#" className="action-icon" onClick={(e) => {
+                                                    <Link to="#" className="btn btn-xs btn-light" onClick={(e) => {
                                                         e.preventDefault();  // Prevent the default behavior of the Link
                                                         navigate(`/master/questions/edit/${item.id}`); // Programmatically navigate
                                                     }}>
                                                         <i className="mdi mdi-square-edit-outline"></i>
                                                     </Link>
-                                                    <Link to="#" className="action-icon" onClick={() => {
+                                                    <Link to="#" className="btn btn-xs btn-light" onClick={() => {
                                                         DeleteService.deleteItem('questions', item.id?.toString() ?? '', fetchItems);
                                                     }}>
                                                         <i className="mdi mdi-delete"></i>
@@ -220,7 +238,7 @@ const QuestionList = () => {
                         </Card>
                     </Col>
                 </Row>
-                {/* <ImportQuestion show={show} onHide={onCloseModal} onSubmit={onSubmit} /> */}
+                <ImportQuestion show={show} onHide={onCloseModal} onSubmit={onSubmit} />
             </React.Fragment>
         </>
     );

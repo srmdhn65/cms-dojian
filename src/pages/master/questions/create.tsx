@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Row, Col, Card, Form, Button } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Card, Form, } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import "easymde/dist/easymde.min.css";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import SimpleMDEReact from "react-simplemde-editor";
 
+// styles
+import "easymde/dist/easymde.min.css";
 // components
 import PageTitle from "../../../components/PageTitle";
 import { FormInput } from "../../../components";
@@ -15,12 +18,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import apiServices from "../../../services/apiServices";
 import CustomButton from "../../../components/CustomButton";
 import { TopicInterface } from "../../../types/topics";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import { QuestionType } from "../../../config/constant-cms";
-
 import BoxedText from "../../../components/BoxText";
 import CardCustom from "../../../components/cardCustom";
+import stripHtml from "../../../utils/html";
 interface CardData {
     id: number;
     text: string;
@@ -30,7 +31,7 @@ interface CardData {
 const QuestionForm = () => {
     const [loading, setLoading] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
-    const [initialData, setInitialData] = useState<any>(null);
+
     const [questionTypeSelected, setQuestionTypeSelected] = useState<string>('');
     const [correctAnswer, setCorrectAnswer] = useState<string>('')
     const [questionText, setQuestionText] = useState<string>('')
@@ -41,6 +42,15 @@ const QuestionForm = () => {
         { id: 3, text: '', color: 'info', isSelected: false },
         { id: 4, text: '', color: 'pink', isSelected: false },
     ]);
+    const delay = 1000;
+    const options = {
+        autofocus: true,
+        autosave: {
+            enabled: true,
+            uniqueId: "1",
+            delay,
+        },
+    };
 
 
     const [topicList, setTopicList] = useState<TopicInterface[]>([]);
@@ -60,6 +70,9 @@ const QuestionForm = () => {
             question_type: yup.string().required('Question Type harus diisi')
         })
     );
+    const handleEditorChange = (html: string, text: string) => {
+        setQuestionText(html)
+    };
 
     // Predefined color array
     const colors = [
@@ -114,6 +127,7 @@ const QuestionForm = () => {
                 {
                     name: params,
                 },
+                true
             );
             const data = response.data;
             if (response.status === 200) {
@@ -135,7 +149,7 @@ const QuestionForm = () => {
             await apiServices.getData(`questions/${id}`, {}, true).then((response) => {
                 const data: any = response.data.data;
                 setValue('question_type', data.question_type);
-                setValue('question_text', data.question);
+                setValue('question_text', data.question ?? '');
                 setValue('topic_id', String(data.topic_id));
                 setQuestionTypeSelected(data.question_type || '');
                 // setTopicSelected(String(data.topic_id));
@@ -153,7 +167,6 @@ const QuestionForm = () => {
                 }
 
             }).catch((error) => {
-                console.error(error);
                 showToast('error', 'Failed to load question details');
             }).finally(() => setLoading(false));
         } catch (error) {
@@ -284,9 +297,11 @@ const QuestionForm = () => {
 
                         <Form.Group className="mb-3">
                             <Form.Label>Pertanyaan</Form.Label>
-                            <ReactQuill theme="snow" value={questionText} onChange={setQuestionText} />
-
-
+                            <SimpleMDEReact id="1" onChange={(value) => {
+                                setQuestionText(value)
+                            }} value={stripHtml(questionText)} options={options} />
+                            {/* <QuillEditor initialContent={questionText} onChange={handleEditorChange} /> */}
+                            {/* <ReactQuill theme="snow" value={questionText} onChange={setQuestionText} /> */}
                         </Form.Group>
                         {questionTypeSelected === 'case_study' ? (
                             <FormInput

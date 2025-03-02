@@ -39,6 +39,7 @@ const EventList = () => {
                 true
             );
             const data = response.data;
+            console.log(data)
 
             setItems(data.data);
             setTotalPages(data.pagination.totalPages);
@@ -86,6 +87,7 @@ const EventList = () => {
                                         <th>No</th>
                                         <th>Name</th>
                                         <th>Icon</th>
+                                        <th>Rank</th>
                                         <th>Start Date</th>
                                         <th>End Date</th>
                                         <th>Reward Badge</th>
@@ -102,23 +104,31 @@ const EventList = () => {
                                             <td>
                                                 <CardImage images={[item.image || '']} preview={true} />
                                             </td>
+                                            <td>{item.rank || '-'}</td>
                                             <td>{item.startDate ? new Date(item.startDate).toLocaleDateString() : '-'}</td>
                                             <td>{item.endDate ? new Date(item.endDate).toLocaleDateString() : '-'}</td>
                                             <td>{item.rewardBadge || '-'}</td>
                                             <td>{item.rewardCoins ?? 0}</td>
                                             <td>{item.rewardXp ?? 0}</td>
                                             <td>
-                                                <Link to="#" className="action-icon" onClick={(e) => {
+                                                <Link to="#" className="btn btn-xs btn-light" onClick={(e) => {
                                                     e.preventDefault(); // Prevent the default behavior of the Link
                                                     navigate(`/master/events/edit/${item.id}`);
                                                 }}>
                                                     <i className="mdi mdi-square-edit-outline"></i>
                                                 </Link>
-                                                <Link to="#" className="action-icon" onClick={() => {
+                                                <Link to="#" className="btn btn-xs btn-light" onClick={(e) => {
+                                                    e.preventDefault(); // Prevent the default behavior of the Link
+                                                    navigate(`/master/events/edit/${item.id}`);
+                                                }}>
+                                                    <i className="mdi mdi-text-search"></i>
+                                                </Link>
+                                                <Link to="#" className="btn btn-xs btn-light" onClick={() => {
                                                     DeleteService.deleteItem('events', item.id?.toString() ?? '', fetchItems);
                                                 }}>
                                                     <i className="mdi mdi-delete"></i>
                                                 </Link>
+
                                             </td>
                                         </tr>
                                     ))}

@@ -1,4 +1,3 @@
-import React from "react";
 import { Card, Row, Col } from "react-bootstrap";
 import classNames from "classnames";
 import CountUp from "react-countup";

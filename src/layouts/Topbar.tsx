@@ -12,16 +12,8 @@ import { RootState, AppDispatch } from "../redux/store";
 //constants
 import { LayoutTypes, SideBarTypes } from "../constants/layout";
 
-// components
-import TopbarSearch from "../components/TopbarSearch";
-import MaximizeScreen from "../components/MaximizeScreen";
-import AppsDropdown from "../components/AppsDropdown/";
-// import SearchDropdown from '../components/SearchDropdown';
-import LanguageDropdown from "../components/LanguageDropdown";
 import NotificationDropdown from "../components/NotificationDropdown";
 import ProfileDropdown from "../components/ProfileDropdown";
-import CreateNew from "../components/CreateNew";
-import MegaMenu from "../components/MegaMenu";
 
 import profilePic from "../assets/images/users/user-1.jpg";
 import avatar4 from "../assets/images/users/user-4.jpg";
@@ -120,8 +112,6 @@ interface TopbarProps {
 const Topbar = ({
   hideLogo,
   navCssClasses,
-  openLeftMenuCallBack,
-  topbarDark,
 }: TopbarProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { width } = useViewport();
@@ -131,10 +121,9 @@ const Topbar = ({
   const navbarCssClasses: string = navCssClasses || "";
   const containerCssClasses: string = !hideLogo ? "container-fluid" : "";
 
-  const { layoutType, leftSideBarType } = useSelector((state: RootState) => ({
-    layoutType: state.Layout.layoutType,
-    leftSideBarType: state.Layout.leftSideBarType,
-  }));
+  const layoutType = useSelector((state: RootState) => state.Layout.layoutType);
+  const leftSideBarType = useSelector((state: RootState) => state.Layout.leftSideBarType);
+
 
 
   /**

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Button, Alert, Row, Col } from "react-bootstrap";
-import { Navigate, Link, useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Row, Col } from "react-bootstrap";
+import { Navigate, Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
@@ -96,6 +96,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [isLoading, setLoading] = useState(false);
+  const [redirectUrl, setRedirectUrl] = useState("");
 
 
   /*
@@ -115,15 +116,16 @@ const Login = () => {
     try {
       setLoading(true);
       await apiServices
-        .postData(`login`, formData, {}, false)
+        .post(`http://localhost:7001/api/admin/login`, formData, false)
         .then((response) => {
           showToast('success', 'Berhasil Login');
           const data = response.data.data;
-          localStorage.setItem('token', data.token);
+          localStorage.setItem("token", data.token);
           localStorage.setItem('user', JSON.stringify(data))
           api.setLoggedInUser(data);
           setAuthorization(data.token);
           navigate('/');
+          setRedirectUrl(location?.search?.slice(6) || "/")
         })
         .catch((error) => {
           showToast('error', error || 'Terjadi kesalahan pada server');
@@ -131,20 +133,20 @@ const Login = () => {
           setLoading(false);
         });
     } catch (error) {
-      console.error("error", error);
       // showToast('error', 'Terjadi kesalahan pada server');
     }
   };
 
+
+
   return (
     <>
-
+      {<Navigate to={redirectUrl}></Navigate>}
 
       <AuthLayout
         helpText={t(
           "Enter your email address and password to access admin panel."
         )}
-      // bottomLinks={<BottomLink />}
       >
 
 

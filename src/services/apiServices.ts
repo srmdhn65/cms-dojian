@@ -3,14 +3,12 @@ import showToast from '../helpers/toast';
 import FormData from 'form-data';
 import config from '../config';
 
-
-
 const baseUrl: string =config.API_BASE_URL || 'http://localhost:8000/api';
 
 interface Headers {
-    Accept: string;
     Authorization?: string;
     'Content-Type'?: string;
+    Cookie?: string
 }
 
 class ApiServices {
@@ -24,7 +22,7 @@ class ApiServices {
 
     private async headers(useToken: boolean): Promise<Headers> {
         if (useToken) {
-            const token: string | null = localStorage.getItem("token");
+            const token = localStorage.getItem("token")?.trim();
             if (!token) {
                 showToast('error', 'Session Kamu Habis, masuk lagi yuk !');
                 localStorage.clear();
@@ -32,14 +30,12 @@ class ApiServices {
                 throw new Error('');
             }
             return {
-                Accept: 'application/json',
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json'
             };
         } else {
             return {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             };
         }
     }
@@ -54,6 +50,9 @@ class ApiServices {
         const paramsText: string = params ? `?${new URLSearchParams(params).toString()}` : '';
         const url: string = `${uri}${paramsText}`;
         const headers: Headers = await this.headers(useToken);
+        console.log(url)
+        console.log(body);
+        console.log(headers);
         return axios.post(url, body, { headers: { ...headers } });
     }
 
@@ -87,6 +86,7 @@ class ApiServices {
     ): Promise<AxiosResponse> {
         const paramsText: string = params ? `?${new URLSearchParams(params).toString()}` : '';
         const url: string = `${baseUrl}/${uri}${paramsText}`;
+        console.log(url)
         const headers: Headers = await this.headers(useToken);
         return axios.post(url, body, { headers: { ...headers } });
     }

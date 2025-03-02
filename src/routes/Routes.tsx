@@ -25,9 +25,8 @@ import { Toaster } from "react-hot-toast";
 interface IRoutesProps { }
 
 const AllRoutes = (props: IRoutesProps) => {
-  const { layout } = useSelector((state: RootState) => ({
-    layout: state.Layout,
-  }));
+  const layout = useSelector((state: RootState) => state.Layout);
+
 
   const getLayout = () => {
     let layoutCls = TwoColumnLayout;

@@ -119,10 +119,8 @@ interface LeftSidebarProps {
 const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
   const menuNodeRef: any = useRef(null);
 
-  const { layoutType } = useSelector((state: RootState) => ({
-    layoutType: state.Layout.layoutType,
-    leftSideBarType: state.Layout.leftSideBarType,
-  }));
+  const layoutType = useSelector((state: RootState) => state.Layout.layoutType);
+
 
   /**
    * Handle the click anywhere in doc

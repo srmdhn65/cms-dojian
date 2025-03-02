@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Card, Form, Button } from "react-bootstrap";
+import { Row, Card } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -21,14 +21,13 @@ import CardImage from "../../../components/cardImage";
 import { BadgeInterface } from "../../../types/badge";
 import { TopicInterface } from "../../../types/topics";
 import { formatDate } from "../../../helpers/date_custom";
-import HyperDatepicker from "../../../components/Datepicker";
-
 const EventForm = () => {
     const [loading, setLoading] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [initialData, setInitialData] = useState<any>(null);
     const [badgeList, setBadgeList] = useState<any>([]);
     const [topicList, setTopicList] = useState<any>([]);
+
     const [image, setImage] = useState("");
     const { id } = useParams();
     const navigate = useNavigate();
@@ -44,7 +43,9 @@ const EventForm = () => {
     const fetchBadge = async () => {
         try {
             const response = await apiServices.getData(
-                'badges-pluck'
+                'badges-pluck',
+                {},
+                true
             );
             const data = response.data;
             if (response.status === 200) {
@@ -63,6 +64,8 @@ const EventForm = () => {
         try {
             const response = await apiServices.getData(
                 'topics-pluck',
+                {},
+                true
             );
             const data = response.data;
             if (response.status === 200) {
@@ -81,6 +84,7 @@ const EventForm = () => {
     const schemaResolver = yupResolver(
         yup.object().shape({
             name: yup.string().required("Silakan masukkan Nama"),
+            rank: yup.string().required('Silahkan pilih rank'),
             description: yup.string().required("Silakan masukkan Deskripsi"),
             startDate: yup.date().nullable().required("Silakan pilih Tanggal Mulai"),
             endDate: yup
@@ -117,25 +121,31 @@ const EventForm = () => {
             setLoading(true);
             const response = await apiServices.getData(`events/${id}`, {}, true);
             const data = response.data.data;
+
+            if (!data) {
+                throw new Error("No data received");
+            }
+
             // Set the form values with the fetched data
             setInitialData(data);
-            setValue("name", data.name);
-            setValue("description", data.description);
-            setValue("startDate", formatDate(data.startDate));
-            setValue("endDate", formatDate(data.endDate));
-            setValue("rewardBadge", data.rewardBadge);
-            setValue("topic_id", data.topic_id);
-            setValue("rewardCoins", data.rewardCoins);
-            setValue("rewardXp", data.rewardXp);
-            setImage(data.image);
-            setLoading(false);
+            setValue("name", data.name || "");
+            setValue("description", data.description || "");
+            setValue("startDate", data.startDate ? formatDate(data.startDate) : "");
+            setValue("endDate", data.endDate ? formatDate(data.endDate) : "");
+            setValue("rewardCoins", data.rewardCoins || 0);
+            setValue("rewardXp", data.rewardXp || 0);
+            setValue("rewardBadge", data.rewardBadge || "");
+            setValue("topic_id", data.topic_id || "");
+            setValue("rank", data.rank || "");
+            setImage(data.image || "")
         } catch (error) {
-
+            console.error(error);
             showToast("error", "An error occurred while fetching data");
         } finally {
-            setLoading(false);
+            setLoading(false); // Ensures loading is disabled whether success or error occurs
         }
     };
+
     const methods = useForm({ resolver: schemaResolver });
     const {
         handleSubmit,
@@ -157,7 +167,7 @@ const EventForm = () => {
             setLoading(true);
             if (isEdit) {
                 await apiServices
-                    .patchData(`events/${id}`, body)
+                    .patchData(`events/${id}`, body, {}, true)
                     .then((response) => {
                         showToast('success', response.data.message);
                         navigate('/master/events');
@@ -168,8 +178,9 @@ const EventForm = () => {
                     }).finally(() => setLoading(false));
             } else {
                 await apiServices
-                    .postData('events', body, {},)
+                    .postData('events', body, {}, true)
                     .then((response) => {
+                        console.log(`data ${response.data}`)
                         showToast('success', response.data.message);
                         navigate('/master/events');
                     })
@@ -253,13 +264,13 @@ const EventForm = () => {
                                     name="rewardBadge"
                                     label="Reward Badge"
                                     options={badgeList.map((data: BadgeInterface) => ({
-                                        value: String(data.id),
+                                        value: data.id,
                                         label: data.name || '', // Maps data.name to the "label"
                                     }))}
                                     control={control}
                                     containerClass="mb-3"
                                     errors={errors}
-                                    defaultValue={getValues('rewardBadge')}
+                                    defaultValue={register('rewardBadge').name || ''}
                                     onChange={(selectedValue) => {
                                         setValue("rewardBadge", selectedValue);
                                     }}
@@ -271,15 +282,33 @@ const EventForm = () => {
                                     name="topic_id"
                                     label="Topik"
                                     options={topicList.map((data: TopicInterface) => ({
-                                        value: String(data.id),
+                                        value: data.id,
                                         label: data.name || '', // Maps data.name to the "label"
                                     }))}
                                     control={control}
                                     containerClass="mb-3"
                                     errors={errors}
-                                    defaultValue={getValues('topic_id')}
+                                    defaultValue={register('topic_id').name || ''}
                                     onChange={(selectedValue) => {
                                         setValue("topic_id", selectedValue);
+                                    }}
+                                    placeholder="Pilih Topik"
+                                />
+                                <SelectInput
+                                    name="rank"
+                                    label="Rank"
+                                    options={[
+                                        { value: "swift", label: "Swift" },
+                                        { value: "royal", label: "Royal" },
+                                        { value: "ultimate", label: "Ultimate" },
+                                        { value: "season", label: "Season" },
+                                    ]}
+                                    control={control}
+                                    containerClass="mb-3"
+                                    errors={errors}
+                                    defaultValue={register('rank').name || ''}
+                                    onChange={(selectedValue) => {
+                                        setValue("rank", selectedValue);
                                     }}
                                     placeholder="Pilih Topik"
                                 />

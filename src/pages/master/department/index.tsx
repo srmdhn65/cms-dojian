@@ -99,19 +99,19 @@ const DepartmentList = () => {
                                                 <CardImage images={[item.image || '']} preview={true} />
                                             </td>
                                             <td>
-                                                <Link to="#" className="action-icon" onClick={(e) => {
+                                                <Link to="#" className="btn btn-xs btn-light" onClick={(e) => {
                                                     e.preventDefault();
                                                     navigate(`/master/topics/${item.id}`)
                                                 }}>
                                                     <i className="mdi mdi-eye"></i>
                                                 </Link>
-                                                <Link to="#" className="action-icon" onClick={(e) => {
+                                                <Link to="#" className="btn btn-xs btn-light" onClick={(e) => {
                                                     e.preventDefault(); // Prevent the default behavior of the Link
                                                     navigate(`/master/departments/edit/${item.id}`);
                                                 }}>
                                                     <i className="mdi mdi-square-edit-outline"></i>
                                                 </Link>
-                                                <Link to="#" className="action-icon" onClick={() => {
+                                                <Link to="#" className="btn btn-xs btn-light" onClick={() => {
                                                     DeleteService.deleteItem('departments', item.id?.toString() ?? '', fetchItems);
                                                 }}>
                                                     <i className="mdi mdi-delete"></i>

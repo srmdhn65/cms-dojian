@@ -104,16 +104,16 @@ const UsersList = () => {
                                             <td>{item.phone}</td>
                                             <td>{item.role}</td>
                                             <td>
-                                                <Link to="#" className="action-icon">
+                                                <Link to="#" className="btn btn-xs btn-light">
                                                     <i className="mdi mdi-eye"></i>
                                                 </Link>
-                                                <Link to="#" className="action-icon" onClick={(e) => {
+                                                <Link to="#" className="btn btn-xs btn-light" onClick={(e) => {
                                                     e.preventDefault();  // Prevent the default behavior of the Link
                                                     navigate(`/master/users/edit/${item.id}`); // Programmatically navigate
                                                 }}>
                                                     <i className="mdi mdi-square-edit-outline"></i>
                                                 </Link>
-                                                <Link to="#" className="action-icon" onClick={() => {
+                                                <Link to="#" className="btn btn-xs btn-light" onClick={() => {
                                                     DeleteService.deleteItem('users', item.id?.toString() ?? '', fetchUsers);
                                                 }}>
                                                     <i className="mdi mdi-delete"></i>
