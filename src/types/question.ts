@@ -7,6 +7,7 @@ export type QuestionInterface = {
     options: string[] | null,
     correct_answer: string | null,
     case_study_details: string | null,
+    is_selected: boolean | false,
     createdAt: string | null,
     updatedAt: string | null
 }

@@ -76,6 +76,21 @@ const MENU_ITEMS: MenuItemTypes[] = [
     icon: "star",
     url: "/master/target-reward",
   },
+  {
+    key: "master-product",
+    label: "Product",
+    isTitle: false,
+    icon: "box", // Contoh ikon FontAwesome untuk produk
+    url: "/master/product",
+  },
+  {
+    key: "master-banners",
+    label: "Banners",
+    isTitle: false,
+    icon: "image", // Contoh ikon FontAwesome untuk banner
+    url: "/master/banners",
+  },
+
 
   { key: "components", label: "Components", isTitle: true },
   {

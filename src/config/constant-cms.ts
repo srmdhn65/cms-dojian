@@ -21,6 +21,28 @@ export const QuestionType = [
     }
 ]
 
+export const ProductType = [
+    {
+        "value": "coints",
+        "label": "Coints"
+    },
+    {
+        "value": "doji_plus",
+        "label": "Doji Plus"
+    },
+    {
+        "value": "doji_point_boost",
+        "label": "Doji Point Boost"
+    },
+]
+
+export const BannerType = [
+    {
+        "value": "shop",
+        "label": "Shop"
+    },
+]
+
 export const RewardType = [
     {
         "value": "badge",

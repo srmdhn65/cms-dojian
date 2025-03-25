@@ -18,6 +18,11 @@ import TargetRewardList from "../pages/master/targetReward";
 import TargetRewardForm from "../pages/master/targetReward/create";
 import DepartmentList from "../pages/master/department";
 import DepartmentForm from "../pages/master/department/create";
+import QuestionDataEvent from "../pages/master/events/question_data";
+import ProductList from "../pages/master/product";
+import ProductForm from "../pages/master/product/create";
+import BannerList from "../pages/master/banner";
+import BannerForm from "../pages/master/banner/create";
 // import Root from './Root';
 
 // lazy load all the views
@@ -316,6 +321,14 @@ const eventRoutes: RoutesProps[] = [
     element: <EventForm />,
     header: "Apps",
   },
+  {
+    path: "/master/events/question-data/:id",
+    name: "Question Data Event",
+    route: PrivateRoute,
+    roles: ["Admin"],
+    element: <QuestionDataEvent />,
+    header: "Apps",
+  },
 ];
 
 const targetRewardRoutes: RoutesProps[] = [
@@ -342,6 +355,62 @@ const targetRewardRoutes: RoutesProps[] = [
     route: PrivateRoute,
     roles: ["Admin"],
     element: <TargetRewardForm />,
+    header: "Apps",
+  },
+];
+
+const prodcutRoutes: RoutesProps[] = [
+  {
+    path: "/master/product",
+    name: "Product",
+    route: PrivateRoute,
+    roles: ["Admin"],
+    icon: "user",
+    element: <ProductList />,
+    header: "Apps",
+  },
+  {
+    path: "/master/product/create",
+    name: "Create Product",
+    route: PrivateRoute,
+    roles: ["Admin"],
+    element: <ProductForm />,
+    header: "Apps",
+  },
+  {
+    path: "/master/product/edit/:id",
+    name: "Edit",
+    route: PrivateRoute,
+    roles: ["Admin"],
+    element: <ProductForm />,
+    header: "Apps",
+  },
+];
+
+const bannerRoutes: RoutesProps[] = [
+  {
+    path: "/master/banners",
+    name: "Banner",
+    route: PrivateRoute,
+    roles: ["Admin"],
+    icon: "box",
+    element: <BannerList />,
+    header: "Apps",
+  },
+  {
+    path: "/master/banners/create",
+    name: "Create Banner",
+    route: PrivateRoute,
+    roles: ["Admin"],
+    element: <BannerForm />,
+    header: "Apps",
+  },
+  {
+    path: "/master/banners/edit/:id",
+    name: "Edit",
+    route: PrivateRoute,
+    roles: ["Admin"],
+    element: <BannerForm />,
     header: "Apps",
   },
 ];
@@ -853,6 +922,8 @@ const authProtectedRoutes = [
   ...eventRoutes,
   ...badgeRoutes,
   ...targetRewardRoutes,
+  ...prodcutRoutes,
+  ...bannerRoutes,
   ...userRoutes,
   extrapagesRoutes,
   uiRoutes,

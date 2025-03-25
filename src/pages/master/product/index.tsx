@@ -1,19 +1,17 @@
-import { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Row, Col, Card } from "react-bootstrap";
+import { Row, Col, Card} from "react-bootstrap";
 import PageTitle from "../../../components/PageTitle";
-// import apiServices from "../../../helpers/api/api";
 import CustomButton from "../../../components/CustomButton";
 import apiServices from "../../../services/apiServices";
 import Pagination from "../../../components/Pagination";
 import DeleteService from "../../../services/deletedServices";
-import { EventInterface } from "../../../types/event";
-import CardImage from "../../../components/cardImage";
+import {ProductInterface} from "../../../types/product";
 
 
-const EventList = () => {
+const ProductList = () => {
     const navigate = useNavigate();
-    const [items, setItems] = useState<EventInterface[]>([]);
+    const [items, setItems] = useState<ProductInterface[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalPages, setTotalPages] = useState<number>(1);
@@ -29,7 +27,7 @@ const EventList = () => {
     const fetchItems = async () => {
         try {
             const response = await apiServices.getData(
-                "events",
+                "products",
                 {
                     page: currentPage,
                     name: searchTerm,
@@ -37,6 +35,7 @@ const EventList = () => {
                 true
             );
             const data = response.data;
+            console.log(data)
             setItems(data.data);
             setTotalPages(data.pagination.totalPages);
         } catch (error) {
@@ -49,10 +48,10 @@ const EventList = () => {
         <>
             <PageTitle
                 breadCrumbItems={[
-                    { label: "Events", path: "/master/events" },
-                    { label: "Events", path: "/master/events", active: true },
+                    { label: "Produk", path: "/master/products" },
+                    { label: "Produk", path: "/master/products", active: true },
                 ]}
-                title={"Data Events"}
+                title={"Data Produk"}
             />
 
             <Row>
@@ -63,7 +62,7 @@ const EventList = () => {
                                 <Col sm={4}>
                                     <CustomButton
                                         type="button"
-                                        onClick={() => navigate("/master/events/create")}
+                                        onClick={() => navigate("/master/product/create")}
                                         label="Tambah Data"
                                     />
                                 </Col>
@@ -81,50 +80,31 @@ const EventList = () => {
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Name</th>
-                                        <th>Icon</th>
-                                        <th>Rank</th>
-                                        <th>Start Date</th>
-                                        <th>End Date</th>
-                                        <th>Reward Badge</th>
-                                        <th>Reward Coins</th>
-                                        <th>Reward XP</th>
+                                        <th>Tipe Produk</th>
+                                        <th>Nilai</th>
+                                        <th>Harga</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {items.map((item: EventInterface, key: number) => (
+                                    {items.map((item: ProductInterface, key: number) => (
                                         <tr key={item.id}>
                                             <td>{(currentPage - 1) * 10 + key + 1}</td>
-                                            <td>{item.name || '-'}</td>
-                                            <td>
-                                                <CardImage images={[item.image || '']} preview={true} />
-                                            </td>
-                                            <td>{item.rank || '-'}</td>
-                                            <td>{item.startDate ? new Date(item.startDate).toLocaleDateString() : '-'}</td>
-                                            <td>{item.endDate ? new Date(item.endDate).toLocaleDateString() : '-'}</td>
-                                            <td>{item.rewardBadge || '-'}</td>
-                                            <td>{item.rewardCoins ?? 0}</td>
-                                            <td>{item.rewardXp ?? 0}</td>
+                                            <td>{item.type || '-'}</td>
+                                            <td>{item.type === 'doji_plus' ? `${item.value} Bulan` : item.type === "coints" ? item.value : `X${item.value}` }</td>
+                                            <td>{item.price || '-'}</td>
                                             <td>
                                                 <Link to="#" className="btn btn-xs btn-light" onClick={(e) => {
                                                     e.preventDefault(); // Prevent the default behavior of the Link
-                                                    navigate(`/master/events/edit/${item.id}`);
+                                                    navigate(`/master/product/edit/${item.id}`);
                                                 }}>
                                                     <i className="mdi mdi-square-edit-outline"></i>
                                                 </Link>
-                                                <Link to="#" className="btn btn-xs btn-light" onClick={(e) => {
-                                                    e.preventDefault(); // Prevent the default behavior of the Link
-                                                    navigate(`/master/events/question-data/${item.id}`);
-                                                }}>
-                                                    <i className="mdi mdi-text-search"></i>
-                                                </Link>
                                                 <Link to="#" className="btn btn-xs btn-light" onClick={() => {
-                                                    DeleteService.deleteItem('events', item.id?.toString() ?? '', fetchItems);
+                                                    DeleteService.deleteItem('products', item.id?.toString() ?? '', fetchItems);
                                                 }}>
                                                     <i className="mdi mdi-delete"></i>
                                                 </Link>
-
                                             </td>
                                         </tr>
                                     ))}
@@ -145,4 +125,4 @@ const EventList = () => {
     );
 };
 
-export default EventList;
+export default ProductList;

@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Row, Col, Card } from "react-bootstrap";
+import { Row, Col, Card} from "react-bootstrap";
 import PageTitle from "../../../components/PageTitle";
 // import apiServices from "../../../helpers/api/api";
 import CustomButton from "../../../components/CustomButton";
 import apiServices from "../../../services/apiServices";
 import Pagination from "../../../components/Pagination";
 import DeleteService from "../../../services/deletedServices";
-import { EventInterface } from "../../../types/event";
+import { BannerInterface } from "../../../types/banner";
 import CardImage from "../../../components/cardImage";
 
 
-const EventList = () => {
+const BannerList = () => {
     const navigate = useNavigate();
-    const [items, setItems] = useState<EventInterface[]>([]);
+    const [items, setItems] = useState<BannerInterface[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalPages, setTotalPages] = useState<number>(1);
@@ -29,7 +29,7 @@ const EventList = () => {
     const fetchItems = async () => {
         try {
             const response = await apiServices.getData(
-                "events",
+                "banners",
                 {
                     page: currentPage,
                     name: searchTerm,
@@ -49,10 +49,10 @@ const EventList = () => {
         <>
             <PageTitle
                 breadCrumbItems={[
-                    { label: "Events", path: "/master/events" },
-                    { label: "Events", path: "/master/events", active: true },
+                    { label: "Banners", path: "/master/banners" },
+                    { label: "Banners", path: "/master/banners", active: true },
                 ]}
-                title={"Data Events"}
+                title={"Data Banners"}
             />
 
             <Row>
@@ -63,7 +63,7 @@ const EventList = () => {
                                 <Col sm={4}>
                                     <CustomButton
                                         type="button"
-                                        onClick={() => navigate("/master/events/create")}
+                                        onClick={() => navigate("/master/banners/create")}
                                         label="Tambah Data"
                                     />
                                 </Col>
@@ -82,49 +82,33 @@ const EventList = () => {
                                     <tr>
                                         <th>No</th>
                                         <th>Name</th>
-                                        <th>Icon</th>
-                                        <th>Rank</th>
-                                        <th>Start Date</th>
-                                        <th>End Date</th>
-                                        <th>Reward Badge</th>
-                                        <th>Reward Coins</th>
-                                        <th>Reward XP</th>
+                                        <th>Type</th>
+                                        <th>Image</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {items.map((item: EventInterface, key: number) => (
+                                    {items.map((item: BannerInterface, key: number) => (
                                         <tr key={item.id}>
                                             <td>{(currentPage - 1) * 10 + key + 1}</td>
-                                            <td>{item.name || '-'}</td>
+                                            <td>{item.title || '-'}</td>
+                                            <td>{item.type || '-'}</td>
                                             <td>
                                                 <CardImage images={[item.image || '']} preview={true} />
                                             </td>
-                                            <td>{item.rank || '-'}</td>
-                                            <td>{item.startDate ? new Date(item.startDate).toLocaleDateString() : '-'}</td>
-                                            <td>{item.endDate ? new Date(item.endDate).toLocaleDateString() : '-'}</td>
-                                            <td>{item.rewardBadge || '-'}</td>
-                                            <td>{item.rewardCoins ?? 0}</td>
-                                            <td>{item.rewardXp ?? 0}</td>
                                             <td>
+                                        
                                                 <Link to="#" className="btn btn-xs btn-light" onClick={(e) => {
                                                     e.preventDefault(); // Prevent the default behavior of the Link
-                                                    navigate(`/master/events/edit/${item.id}`);
+                                                    navigate(`/master/banners/edit/${item.id}`);
                                                 }}>
                                                     <i className="mdi mdi-square-edit-outline"></i>
                                                 </Link>
-                                                <Link to="#" className="btn btn-xs btn-light" onClick={(e) => {
-                                                    e.preventDefault(); // Prevent the default behavior of the Link
-                                                    navigate(`/master/events/question-data/${item.id}`);
-                                                }}>
-                                                    <i className="mdi mdi-text-search"></i>
-                                                </Link>
                                                 <Link to="#" className="btn btn-xs btn-light" onClick={() => {
-                                                    DeleteService.deleteItem('events', item.id?.toString() ?? '', fetchItems);
+                                                    DeleteService.deleteItem('banners', item.id?.toString() ?? '', fetchItems);
                                                 }}>
                                                     <i className="mdi mdi-delete"></i>
                                                 </Link>
-
                                             </td>
                                         </tr>
                                     ))}
@@ -145,4 +129,4 @@ const EventList = () => {
     );
 };
 
-export default EventList;
+export default BannerList;
